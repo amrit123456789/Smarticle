@@ -9,12 +9,13 @@ app.use(express.urlencoded({ extended: true }))
 // Routes
 app.use('/api', require('./routes/api'))
 
-db.sync()
-  .then(() => {
-    app.listen(7788, () => {
-      console.log('Server started on http://localhost:7788/')
-    })
-  })
-  .catch(err => {
-    console.error(err)
-})
+
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err) ;
+});
+
+var server = app.listen( process.env.PORT || 7788, function(){
+  console.log('Listening on port ' + server.address().port);
+});

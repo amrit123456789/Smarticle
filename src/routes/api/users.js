@@ -3,13 +3,16 @@ const { createUser, verifyUser } = require('../../controllers/users')
 
 const route = Router()
 
-route.post('/', async (req, res) => {
-  console.log("here in users api before")
-  console.log(req.body)
-  const createdUser = await createUser( req.body)
-  console.log("here in users api after")
-  res.send(createdUser)
-})
+route.post('/', function(req,res,next){
+  var user = new User();
+  user.username = req.body.user.username;
+  user.email = req.body.user.email;
+  user.setPassword(req.body.user.password);
+
+  user.save().then(function(){
+      return res.json({user: user.toAuthJSON()});
+  }).catch(next);
+});
 
 route.post('/login', async (req, res) => {
   try {
