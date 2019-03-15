@@ -1,6 +1,24 @@
-const express = require('express')
-const db =require('./models').db
+var http = require('http'),
+    path = require('path'),
+    //methods = require('methods'),
+    express = require('express'),
+    bodyParser = require('body-parser'),
+    //session = require('express-session'),
+    //cors = require('cors'),
+    passport = require('passport'),
+   // errorhandler = require('errorhandler'),
+mongoose = require('mongoose');
+
 const app =express()
+require('./models')
+require('./config/passport')
+
+
+var db = 'mongodb://localhost:27017/my_db';
+mongoose
+.connect(db,{useNewUrlParser:true})
+.then(()=>console.log("mongo server connected succesfully"))
+.catch(err=>console.log(err))
 
 // For POST requests
 app.use(express.json())

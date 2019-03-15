@@ -1,39 +1,6 @@
 const  Users  = require('../models').Users
 const  createJwt  = require('../utils/jwt').createJwt
 
-async function createUser(userOpts) {
-  if (!userOpts.username) {
-    throw new Error('Did not supply username')
-  }
-  if (!userOpts.email) {
-    throw new Error('Did not supply email')
-  }
-  if (!userOpts.password) {
-    throw new Error('Did not supply password')
-  }
-  console.log("here before creating")
-  const user = await Users.create({
-    ...userOpts, // TODO: Password not in plaintext
-  })
-  console.log("here after creating")
-  if (!user) {
-    throw new Error('Error creating user')
-  }
-
-  const createdUser = await Users.findOne({
-    attributes: ['email', 'username', 'bio', 'image'],
-    where: {
-      username: user.username
-    }
-  })
-  const token = await createJwt(createdUser.get())
-
-  return {
-    ...createdUser.get(),
-    token
-  }
-}
-
 async function verifyUser(userOpts) {
   if (!userOpts.email) {
     throw new Error('Did not supply email')
@@ -66,6 +33,6 @@ async function verifyUser(userOpts) {
 }
 
 module.exports = {
-  createUser,
+ 
   verifyUser
 }

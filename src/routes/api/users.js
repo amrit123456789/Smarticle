@@ -1,31 +1,81 @@
 const { Router } = require('express')
-const { createUser, verifyUser } = require('../../controllers/users')
+//const {  verifyUser } = require('../../controllers/users')
+var mongoose = require('mongoose');
+var passport = require('passport');
+var User = mongoose.model('User');
 
 const route = Router()
 
-route.post('/', function(req,res,next){
-  var user = new User();
-  user.username = req.body.user.username;
-  user.email = req.body.user.email;
-  user.setPassword(req.body.user.password);
 
-  user.save().then(function(){
-      return res.json({user: user.toAuthJSON()});
-  }).catch(next);
+
+route.post('/login',function(req,res,next){
+  if(!req.body.user.email){
+      return res.status(422).json({errors: {email: "can't be blank."}});
+  }
+
+  if(!req.body.user.password){
+      return res.status(422).json({errors: {password: "can't be blank."}});
+  }
+
+  passport.authenticate('local', {session: false}, function(err, user, info){
+      if(err){return next(err);}
+
+      if(user){
+          user.token = user.generateJWT();
+          return res.json({user: user.toAuthJSON()});
+      } else {
+          return res.status(422).json(info);
+      }
+  })(req,res,next)
 });
 
-route.post('/login', async (req, res) => {
-  try {
-    const verifiedUser = await verifyUser(req.body)
-    res.send(verifiedUser)
-  } catch (err) {
-    res.status(403).send({
-      errors: {
-        body: [ err.message ]
-      }
-    })
-  }
-})
 
+
+route.post('/', function(req,res,next){
+  var user = new User();
+  
+//   console.log("req.body: ",req.body)
+//   console.log("req.body.user: ",req.body.user)
+ // console.log(JSON.parse((req.body)))
+ 
+  user.email = req.body.user.email;
+  user.username = req.body.user.username;
+  user.setPassword(req.body.user.password);
+  console.log("after changing")
+  console.log(user)
+  try{
+  user.save().then(function(){
+    console.log("after changing")
+      return res.json({user: user.toAuthJSON()});
+  }).catch(err=>{
+    console.log(err);
+  });
+}
+catch(err){
+    console.log(err);
+}
+});
+
+route.use(function(err,req,res,next){
+
+  if(err.name === 'ValidationError'){
+
+      return res.json({
+
+          errors: Object.keys(err.errors).reduce(function(errors ,key){
+
+              errors[key] = err.errors[key].message;
+
+              return errors;
+
+          }, {})
+
+      })
+
+  }
+
+  return next(err);
+
+});
 
 module.exports = route

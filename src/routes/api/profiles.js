@@ -1,12 +1,13 @@
 const Router =require('express').Router
-const {Users} =require('../../models/index')
+var mongoose = require('mongoose');
+var User = mongoose.model('User');
 const route =Router()
-const {auth}=require('../../middlewares/auth')
+var auth =require('../../middlewares/auth')
 
 
 // Preload user profile on routes with ':username'
 route.param('username', function(req, res, next, username){
-  Users.findOne({
+  User.findOne({
     where:{username: username}
   }).then(function(user){
     if (!user) { return res.sendStatus(404); }
@@ -19,7 +20,7 @@ route.param('username', function(req, res, next, username){
 
 route.get('/:username',auth.optional, function(req, res, next){
   if(req.payload){
-    Users.findById(req.payload.id).then(function(user){
+    User.findById(req.payload.id).then(function(user){
       if(!user){ return res.json({profile: req.profile.toProfileJSONFor(false)}); }
 
       return res.json({profile: req.profile.toProfileJSONFor(user)});
