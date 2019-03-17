@@ -10,7 +10,9 @@ var http = require('http'),
 mongoose = require('mongoose');
 
 const app =express()
-require('./models')
+
+require('./models/user')
+require('./models/article')
 require('./config/passport')
 
 
