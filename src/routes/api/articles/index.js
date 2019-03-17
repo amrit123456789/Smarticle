@@ -23,15 +23,16 @@ route.post('/', auth.required , (req,res,next)=>{
 })
 
 route.param('article', (req,res,next,slug)=>{
-  console.log("iam in article param")
+  //console.log("iam in article param")
   Article.findOne({slug:slug})
   .populate('author')
   .then((article)=>{
         if(!article){
           return res.sendStatus(404)
         }
+       // console.log("req.article is .............",req.article)
         req.article=article
-        console.log("article is ",article)
+      //  console.log("article is .........",article)
         return next()
   })
   .catch(next)
@@ -40,20 +41,23 @@ route.param('article', (req,res,next,slug)=>{
 
 // Get one article.. understand it once again
 route.get('/:article', auth.optional, function(req,res,next){
+  console.log("req.payload before......",req.payload)
   Promise.all([
    // console.log("req.payload before......",req.payload)
       req.payload ? User.findById(req.payload.id) : null,
       req.article.populate('author').execPopulate()
       //console.log("req.payload after......",req.payload)
   ]).then(function(results){
-    console.log("results............" , results)
+   // console.log("results............" , results)
+    console.log("req.payload after......",req.payload)
       var user = results[0];
-      console.log("user is.....", user)
+     // console.log("user is.....", user)
       return res.json({article: req.article.toJSONFor()});
   }).catch(next);
 });
 
-route.put(':/article',auth.required, (req,res,next)=>{
+route.put('/:article',auth.required, (req,res,next)=>{
+  console.log("came in put request", req.body)
   User.findById(req.payload.id).then((user)=>{
     if(req.article.author._id.toString()=== req.payload.id.toString()){
 
@@ -82,8 +86,9 @@ route.put(':/article',auth.required, (req,res,next)=>{
 
   route.delete('/:article', auth.required , (req,res,next)=>{
     User.findById(req.payload.id).then((user)=>{
-      if(req.payload.id.toString()=== req.author._id.toString()){
+      if(req.payload.id.toString()=== req.article.author._id.toString()){
             req.article.remove().then(()=>{
+              console.log("deleted successfully")
               return res.sendStatus(204)
             })
       }
