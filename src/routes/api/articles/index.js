@@ -66,7 +66,7 @@ route.get('/:article', auth.optional, function(req,res,next){
     console.log("req.payload after......",req.payload)
       var user = results[0];
      // console.log("user is.....", user)
-      return res.json({article: req.article.toJSONFor()});
+      return res.json({article: req.article.toJSONFor(user)});
   }).catch(next);
 });
 
@@ -178,6 +178,38 @@ route.put('/:article',auth.required, (req,res,next)=>{
       })
       .catch(next)
     })
+
+
+    route.post('/:article/favorite' , auth.required, (req,res,next)=>{
+      User.findById(req.payload.id).then((user)=>{
+        if(!user)
+        res.sendStatus(401)
+
+      return user.favorite(req.article._id).then(()=>{
+         return req.article.updateFavoriteCount().then(()=>{
+          return res.json({article : req.article.toJSONFor(user)})
+        })
+      })
+        
+    })
+    .catch(next)
+    })
+
+    route.delete('/:article/favorite' , auth.required, (req,res,next)=>{
+      User.findById(req.payload.id).then((user)=>{
+        if(!user)
+        res.sendStatus(401)
+
+      return user.unfavorite(req.article._id).then(()=>{
+        req.article.updateFavoriteCount().then(()=>{
+          return res.json({article : req.article.toJSONFor(user)})
+        })
+      })
+        
+    })
+    .catch(next)
+    })
+    
     
    
 

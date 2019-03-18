@@ -29,7 +29,7 @@ Articleschema.methods.slugify = function(){
     this.slug = slug(this.title) + '-' + (Math.random() * Math.pow(36, 6) | 0).toString(36);
 };
 
-Articleschema.methods.toJSONFor=function(){
+Articleschema.methods.toJSONFor=function(user){
     return {
         slug :this.slug,
         title:this.title,
@@ -37,12 +37,21 @@ Articleschema.methods.toJSONFor=function(){
         body: this.body,
         tagList: this.tagList,
         favoritesCount: this.favoritesCount,
-        favorited: false,//user ? user.isFavorite(this._id) : false,
+        favorited: user ? user.isFavorite(this._id) : false,
         createdAt: this.createdAt,
         updatedAt: this.updatedAt,
         author: this.author.toProfileJSONFor()
     }
 
+}
+
+Articleschema.methods.updateFavoriteCount = function(){
+    article= this
+    return User.count({favorites: {$in: [article._id]} } )
+    .then((count)=>{
+      article.favoritesCount = count
+      return article.save()
+    })
 }
 
 mongoose.model('Article', Articleschema);
