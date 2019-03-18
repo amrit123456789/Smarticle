@@ -12,8 +12,9 @@ mongoose = require('mongoose');
 const app =express()
 
 require('./models/user')
-require('./models/article')
 require('./models/comment')
+require('./models/article')
+
 require('./config/passport')
 
 

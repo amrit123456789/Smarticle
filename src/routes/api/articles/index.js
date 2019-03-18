@@ -8,6 +8,33 @@ var auth =require('../../../middlewares/auth')
 
 //route.use('/comments' , require('./comments'))
 
+route.param('article', (req,res,next,slug)=>{
+  console.log("iam in article param")
+  Article.findOne({slug:slug})
+  .populate('author')
+  .then((article)=>{
+        if(!article){
+          return res.sendStatus(404)
+        }
+       // console.log("req.article is .............",req.article)
+        req.article=article
+      //  console.log("article is .........",article)
+        return next()
+  })
+  .catch(next)
+})
+
+route.param('comment', (req,res,next,id)=>{
+  console.log("in param req")
+  Comment.findById(id).then(function(comment){
+    if(!comment){return res.sendStatus(404);}
+
+    req.comment = comment;
+     next()
+  })
+  .catch(next)
+})
+
 route.post('/', auth.required , (req,res,next)=>{
   User.findById(req.payload.id).then((user)=>{
     if(!user)return res.sendStatus(401)
@@ -23,21 +50,7 @@ route.post('/', auth.required , (req,res,next)=>{
   .catch(next)
 })
 
-route.param('article', (req,res,next,slug)=>{
-  //console.log("iam in article param")
-  Article.findOne({slug:slug})
-  .populate('author')
-  .then((article)=>{
-        if(!article){
-          return res.sendStatus(404)
-        }
-       // console.log("req.article is .............",req.article)
-        req.article=article
-      //  console.log("article is .........",article)
-        return next()
-  })
-  .catch(next)
-})
+
 
 
 // Get one article.. understand it once again
@@ -100,19 +113,12 @@ route.put('/:article',auth.required, (req,res,next)=>{
     .catch(next)
   })
 
-  route.param('comment', (req,res,next)=>{
-    Comment.findById(id).then(function(comment){
-      if(!comment){return res.sendStatus(404);}
-
-      req.comment = comment;
-       next()
-    })
-    .catch(next)
-  })
+  
   
   route.post('/:article/comments', auth.required , (req,res,next)=>{
+    console.log("in post req")
 
-    User.findbyId(req.payload.id).then((user)=>{
+    User.findById(req.payload.id).then((user)=>{
         if(!user){res.sendStatus(401)}
 
         var comment =new Comment(req.body.comment)
@@ -131,10 +137,11 @@ route.put('/:article',auth.required, (req,res,next)=>{
     })
 
     route.get('/:article/comments', auth.optional , (req,res,next)=>{
-      User.findbyId(req.payload.id).then((user)=>{
-        if(!user){res.sendStatus(401)}
+      Promise.resolve(req.payload ? User.findById(req.payload.id) : null)
+      .then((user)=>{
+        //if(!user){res.sendStatus(401)}
 
-        return req.aritlce.populate({
+        return req.article.populate({
           path: 'comments' ,
           populate:{
           path:  'author'
@@ -145,7 +152,7 @@ route.put('/:article',auth.required, (req,res,next)=>{
             }
           }
         }).execPopulate().then(()=>{
-          return res,json({comments: 
+          return res.json({comments: 
           req.article.comments.map((comment)=>{
             return comment.toJSONFor()
           })})
@@ -154,7 +161,25 @@ route.put('/:article',auth.required, (req,res,next)=>{
     })
     .catch(next)
     })
+
+    route.delete('/:article/comments/:comment', auth.required, (req,res,next)=>{
+      User.findById(req.payload.id).then((user)=>{
+          if(req.payload.id.toString() === req.comment.author._id.toString()){
+            req.article.comments.remove(req.comment._id)
+            
+            return req.article.save().then(Comment.findOne( { _id:req.comment._id } ) 
+            .remove().exec())
+            .then(()=>{res.sendStatus(204)})
+              
+          }
+          else{
+            res.sendStatus(403)
+          }
+      })
+      .catch(next)
     })
+    
    
 
+  
 module.exports=route
