@@ -3,9 +3,10 @@ const route =Router()
 var mongoose =require('mongoose')
 var Article = mongoose.model('Article')
 var User = mongoose.model('User')
+var Comment =mongoose.model('Comment')
 var auth =require('../../../middlewares/auth')
 
-route.use('/comments' , require('./comments'))
+//route.use('/comments' , require('./comments'))
 
 route.post('/', auth.required , (req,res,next)=>{
   User.findById(req.payload.id).then((user)=>{
@@ -99,57 +100,61 @@ route.put('/:article',auth.required, (req,res,next)=>{
     .catch(next)
   })
 
+  route.param('comment', (req,res,next)=>{
+    Comment.findById(id).then(function(comment){
+      if(!comment){return res.sendStatus(404);}
+
+      req.comment = comment;
+       next()
+    })
+    .catch(next)
+  })
   
-  // // Get single article
-  // route.get('/:slug', (req, res) => {
-  //   res.send({
-  //     "article": {
-  //       "slug": req.params.slug,
-  //       "title": "How to train your dragon",
-  //       "description": "Ever wonder how?",
-  //       "body": "It takes a Jacobian",
-  //       "tagList": ["dragons", "training"],
-  //       "createdAt": "2016-02-18T03:22:56.637Z",
-  //       "updatedAt": "2016-02-18T03:48:35.824Z",
-  //       "favorited": false,
-  //       "favoritesCount": 0,
-  //       "author": {
-  //         "username": "jake",
-  //         "bio": "I work at statefarm",
-  //         "image": "https://i.stack.imgur.com/xHWG8.jpg",
-  //         "following": false
-  //       }
-  //     }
-  //   })
-  // })
-  
-  // // Get comments on an article
-  // route.get('/:slug/comments', (req, res) => {
-  //   res.send({
-  //     "comments": [{
-  //       "id": 1,
-  //       "createdAt": "2016-02-18T03:22:56.637Z",
-  //       "updatedAt": "2016-02-18T03:22:56.637Z",
-  //       "body": "It takes a Jacobian",
-  //       "author": {
-  //         "username": "jake",
-  //         "bio": "I work at statefarm",
-  //         "image": "https://i.stack.imgur.com/xHWG8.jpg",
-  //         "following": false
-  //       }
-  //     }, {
-  //       "id": 2,
-  //       "createdAt": "2016-03-18T03:22:56.637Z",
-  //       "updatedAt": "2016-03-18T03:22:56.637Z",
-  //       "body": "It makes a Jacobian",
-  //       "author": {
-  //         "username": "mary",
-  //         "bio": "I work at farmstate",
-  //         "image": "https://i.stack.imgur.com/xHWG8.jpg",
-  //         "following": false
-  //       }
-  //     }]
-  //   })
-  // })
+  route.post('/:article/comments', auth.required , (req,res,next)=>{
+
+    User.findbyId(req.payload.id).then((user)=>{
+        if(!user){res.sendStatus(401)}
+
+        var comment =new Comment(req.body.comment)
+        comment.author = user
+        comment.aritlce = req.article
+        comment.save()
+
+        req.article.comments.push(comment)
+
+        return req.article.save().then(()=>{
+            return res.json({comment : comment.toJSONFor(user)})
+        })
+
+    })
+    .catch(next)
+    })
+
+    route.get('/:article/comments', auth.optional , (req,res,next)=>{
+      User.findbyId(req.payload.id).then((user)=>{
+        if(!user){res.sendStatus(401)}
+
+        return req.aritlce.populate({
+          path: 'comments' ,
+          populate:{
+          path:  'author'
+          },
+          options:{
+            sort:{
+              createdAt: 'desc'
+            }
+          }
+        }).execPopulate().then(()=>{
+          return res,json({comments: 
+          req.article.comments.map((comment)=>{
+            return comment.toJSONFor()
+          })})
+        })
+
+    })
+    .catch(next)
+    })
+    })
+   
 
 module.exports=route

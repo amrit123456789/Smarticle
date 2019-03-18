@@ -13,6 +13,7 @@ const app =express()
 
 require('./models/user')
 require('./models/article')
+require('./models/comment')
 require('./config/passport')
 
 

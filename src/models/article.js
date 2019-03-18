@@ -2,6 +2,7 @@ var mongoose = require('mongoose')
 var uniquevalidator =require('mongoose-unique-validator')
 var slug = require('slug')
 var User = mongoose.model('User')
+var Comment = mongoose.model('Comment');
 
 var Articleschema = new mongoose.Schema({
     slug:{type :String , unique:true, lowercase:true },
@@ -10,7 +11,8 @@ var Articleschema = new mongoose.Schema({
     body: String,
     tagList : [{type :String}],
     favoritesCount: { type:Number , default:0},
-    author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    comments: [{type: mongoose.Schema.Types.ObjectId, ref:'Comment'}]
 },{timestamps:true});
 
 Articleschema.plugin(uniquevalidator, {message:"is already taken"})
