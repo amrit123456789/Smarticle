@@ -35,7 +35,7 @@ route.param('comment', (req,res,next,id)=>{
   .catch(next)
 })
 
-router.get('/feed', auth.required, function(req,res,next){
+route.get('/feed', auth.required, function(req,res,next){
   var limit = 20;
  // var query = {};
   var offset = 0;
@@ -271,7 +271,7 @@ route.put('/:article',auth.required, (req,res,next)=>{
     ])
     .then((results)=>{
       var author = results[0],
-      var favoriter = results[1]
+      favoriter = results[1]
 
       if(author){
         query.author = author._id
@@ -279,7 +279,7 @@ route.put('/:article',auth.required, (req,res,next)=>{
       if(favoriter){
         query.id = {$in : favoriter.favorites}
       }
-      else. if (req.query.favorited){
+      else if (req.query.favorited){
         query.id = {$in : []}
       }
 
