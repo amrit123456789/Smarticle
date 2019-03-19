@@ -28,6 +28,19 @@ mongoose
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+app.use('/', (req,res,next)=>{
+//  if(req.user){
+      
+      return express.static(path.join(__dirname, 'public'))(req,res,next)
+      //next()
+  //}
+  // else{
+  //     res.redirect('/api/auth/login')
+  //     next()
+  // }
+  
+})
+
 // Routes
 app.use('/api', require('./routes/api'))
 
@@ -39,5 +52,5 @@ app.use(function(req, res, next) {
 });
 
 var server = app.listen( process.env.PORT || 7788, function(){
-  console.log('Listening on port ' + server.address().port);
+  console.log('Listening on port  http://localhost:' + server.address().port);
 });
