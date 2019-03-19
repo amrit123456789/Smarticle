@@ -28,12 +28,12 @@ mongoose
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.use('/', require('./public/pages'))
+//app.use('/', require('./public/pages'))
 
-app.use('/', (req,res,next)=>{
+app.use('/static',
 //  if(req.user){
       
-      return express.static(path.join(__dirname, 'public/pages/index.html'))(req,res,next)
+       express.static(path.join(__dirname, 'public'))
       //next()
   //}
   // else{
@@ -41,18 +41,18 @@ app.use('/', (req,res,next)=>{
   //     next()
   // }
   
-})
+)
 
-dwwsofmwsomfsm
+//dwwsofmwsomfsm
 // Routes
 app.use('/api', require('./routes/api'))
+app.use('/',function(){console.log("Herererere")})
 
-
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err) ;
-});
+// app.use(function(req, res, next) {
+//   var err = new Error('Not Found');
+//   err.status = 404;
+//   next(err) ;
+// });
 
 var server = app.listen( process.env.PORT || 7788, function(){
   console.log('Listening on port  http://localhost:' + server.address().port);
