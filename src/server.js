@@ -28,18 +28,20 @@ mongoose
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.use('/', (req,res,next)=>{
-//  if(req.user){
+app.use('/', require('./public/pages'))
+
+// app.use('/', (req,res,next)=>{
+// //  if(req.user){
       
-      return express.static(path.join(__dirname, 'public'))(req,res,next)
-      //next()
-  //}
-  // else{
-  //     res.redirect('/api/auth/login')
-  //     next()
-  // }
+//       return express.static(path.join(__dirname, 'public/pages/index.html'))(req,res,next)
+//       //next()
+//   //}
+//   // else{
+//   //     res.redirect('/api/auth/login')
+//   //     next()
+//   // }
   
-})
+//})
 
 // Routes
 app.use('/api', require('./routes/api'))
