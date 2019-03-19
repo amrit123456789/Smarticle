@@ -29,4 +29,29 @@ route.get('/:username',auth.optional, function(req, res, next){
     return res.json({profile: req.profile.toProfileJSONFor(false)});
   }
 });
+
+route.post('/:username/follow', auth.required , (req,res,next)=>{
+  
+    User.findById(req.payload.id).then((user)=>{
+      if(!user)
+      res.sendStatus(401)
+
+    return user.follow(req.profile._id).then(()=>{
+     
+        return res.json({profile : req.profile.toProfileJSONFor(user)})
+      
+    })
+      
+  })
+  .catch(next)
+  })
+
+  route.delete('/:username/follow', auth.required, function(req,res,next){
+    User.findById(req.payload.id).then(function(user){
+        return user.unfollow(req.profile._id).then(function(){
+            return res.json({profile: req.profile.toProfileJSONFor(user)});
+        });
+    }).catch(next);
+});
+
 module.exports=route
