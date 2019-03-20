@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="auth.css" >
+  
+  <title>Document</title>
+  <style>
+    
+  
+  </style>
+
+</head>
+<body>
+
+    <nav class="navbar navbar-light">
+        <div class="container">
+          <a class="navbar-brand" href="index.html">conduit</a>
+          <ul class="nav navbar-nav pull-xs-right">
+            <li class="nav-item">
+              <a class="nav-link" href="editor.html">
+                <i class="ion-compose"></i>&nbsp;New Post
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="auth.html">Sign up</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="settings.html">Settings</a>
+            </li>
+  <!--           <li class="nav-item active">
+              <a class="nav-link" href="index.html">Home</a>
+            </li> -->
+          </ul>
+        </div>
+      </nav>
+
+
+    <div class="auth-page">
+        <div class="container page">
+          <div class="row">
+      
+            <div class="col-md-6 col-md-offset-3 col-xs-12">
+              <h1 class="text-xs-center">Log in</h1>
+              
+      
+      <!--         <ul class="error-messages">
+                <li>That email is already taken</li>
+              </ul> -->
+      
+              <form method="POST" action="/api/users/login">
+               
+                <fieldset class="form-group">
+                  <input class="form-control form-control-lg" type="text" name="email" placeholder="Email">
+                </fieldset>
+                <fieldset class="form-group">
+                  <input class="form-control form-control-lg" type="password" name="password" placeholder="Password">
+                </fieldset>
+                <input class="btn btn-lg btn-primary pull-xs-right" type="submit" placeholder="Login">
+                  <!-- Sign up -->
+               
+              </form>
+            </div>
+      
+          </div>
+        </div>
+      </div>
+  
+</body>
+</html>
+
+
+
+
+
+

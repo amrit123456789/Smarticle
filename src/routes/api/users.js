@@ -9,11 +9,13 @@ const route = Router()
 
 
 route.post('/login',function(req,res,next){
-  if(!req.body.user.email){
+
+  console.log(req.body)
+  if(!req.body.email){
       return res.status(422).json({errors: {email: "can't be blank."}});
   }
 
-  if(!req.body.user.password){
+  if(!req.body.password){
       return res.status(422).json({errors: {password: "can't be blank."}});
   }
 
@@ -22,7 +24,10 @@ route.post('/login',function(req,res,next){
 
       if(user){
           user.token = user.generateJWT();
-          return res.json({user: user.toAuthJSON()});
+          //return res.json({user: user.toAuthJSON()});
+          //successRedirect: '/',
+          //failureRedirect: '/api/auth/login'
+          res.redirect('../../static/pages/index.html')
       } else {
           return res.status(422).json(info);
       }
@@ -34,13 +39,13 @@ route.post('/login',function(req,res,next){
 route.post('/', function(req,res,next){
   var user = new User();
   
-//   console.log("req.body: ",req.body)
+   console.log("req.body: ",req.body)
 //   console.log("req.body.user: ",req.body.user)
  // console.log(JSON.parse((req.body)))
  
-  user.email = req.body.user.email;
-  user.username = req.body.user.username;
-  user.setPassword(req.body.user.password);
+  user.email = req.body.email;
+  user.username = req.body.username;
+  user.setPassword(req.body.password);
   console.log("after changing")
   console.log(user)
   try{

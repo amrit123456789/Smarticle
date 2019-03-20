@@ -3,7 +3,7 @@ var http = require('http'),
     //methods = require('methods'),
     express = require('express'),
     bodyParser = require('body-parser'),
-    //session = require('express-session'),
+    session = require('express-session'),
     //cors = require('cors'),
     passport = require('passport'),
    // errorhandler = require('errorhandler'),
@@ -28,31 +28,28 @@ mongoose
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-//app.use('/', require('./public/pages'))
 
 app.use('/static',
-//  if(req.user){
-      
        express.static(path.join(__dirname, 'public'))
-      //next()
-  //}
-  // else{
-  //     res.redirect('/api/auth/login')
-  //     next()
-  // }
+       )
+
+// app.use('/', (req,res,next)=>{
+//   if(req.user){
+      
+//       return express.static(path.join(__dirname, 'public'))(req,res,next)
+//       //next()
+//   }
+//   else{
+//       res.redirect('/api/auth/login')
+//       next()
+//   }
   
-)
+// })
 
-//dwwsofmwsomfsm
-// Routes
+
+
 app.use('/api', require('./routes/api'))
-app.use('/',function(){console.log("Herererere")})
 
-// app.use(function(req, res, next) {
-//   var err = new Error('Not Found');
-//   err.status = 404;
-//   next(err) ;
-// });
 
 var server = app.listen( process.env.PORT || 7788, function(){
   console.log('Listening on port  http://localhost:' + server.address().port);
