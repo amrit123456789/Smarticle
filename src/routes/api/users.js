@@ -24,10 +24,11 @@ route.post('/login',function(req,res,next){
 
       if(user){
           user.token = user.generateJWT();
-          //return res.json({user: user.toAuthJSON()});
+          console.log(user.token)
+          return res.json({user: user.toAuthJSON()});
           //successRedirect: '/',
           //failureRedirect: '/api/auth/login'
-          res.redirect('../../static/pages/index.html')
+          res.redirect('../../pages/index.html')
       } else {
           return res.status(422).json(info);
       }

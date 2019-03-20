@@ -29,7 +29,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 
-app.use('/static',
+app.use('/',
        express.static(path.join(__dirname, 'public'))
        )
 

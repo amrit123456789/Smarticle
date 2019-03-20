@@ -4,9 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+  
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="home.css">
+
+  <script src="index.js"></script>
 
   <title>Document</title>
 </head>
@@ -51,49 +57,54 @@
               <div class="feed-toggle">
                 <ul class="nav nav-pills outline-active">
                   <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Your Feed</a>
+                    <a class="nav-link " href="myfeed.html">Your Feed</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link active" href="#">Global Feed</a>
                   </li>
                 </ul>
               </div>
-      
-              <div class="post-preview">
-                <div class="post-meta">
-                  <a href="profile.html"><img src="http://i.imgur.com/Qr71crq.jpg" /></a>
-                  <div class="info">
-                    <a href="profile.html" class="author">Eric Simons</a>
-                    <span class="date">January 20th</span>
-                  </div>
-                  <button class="btn btn-outline-primary btn-sm pull-xs-right">
-                    <i class="ion-heart"></i> 29
-                  </button>
-                </div>
-                <a href="post.html" class="preview-link">
-                  <h1>How to build webapps that scale</h1>
-                  <p>In my demo, the holy grail layout is nested inside a document, so there's no body or main tags like shown above. Regardless, we're interested in the class names and the appearance of sections in the markup as opposed to the actual elements themselves. In particular, take note of the modifier classes used on the two sidebars, and the trivial order in which they appear in the markup. Let's break this down to paint a clear picture of what's happening...</p>
-                  <span>Read more...</span>
-                </a>
+
+              <div class="mypost">
+                  <div class="post-preview">
+                      <div class="post-meta">
+                        <a href="profile.html"><img src="http://i.imgur.com/Qr71crq.jpg" /></a>
+                        <div class="info">
+                          <a href="profile.html" class="author">Eric Simons</a>
+                          <span class="date">January 20th</span>
+                        </div>
+                        <button class="btn btn-outline-primary btn-sm pull-xs-right">
+                          <i class="ion-heart"></i> 29
+                        </button>
+                      </div>
+                      <a href="post.html" class="preview-link">
+                        <h1>How to build webapps that scale</h1>
+                        <p>In my demo, the holy grail layout is nested inside a document, so there's no body or main tags like shown above. Regardless, we're interested in the class names and the appearance of sections in the markup as opposed to the actual elements themselves. In particular, take note of the modifier classes used on the two sidebars, and the trivial order in which they appear in the markup. Let's break this down to paint a clear picture of what's happening...</p>
+                        <span>Read more...</span>
+                      </a>
+                    </div>
+            
+                    <div class="post-preview">
+                      <div class="post-meta">
+                        <a href="profile.html"><img src="http://i.imgur.com/N4VcUeJ.jpg" /></a>
+                        <div class="info">
+                          <a href="profile.html" class="author">Albert Pai</a>
+                          <span class="date">January 20th</span>
+                        </div>
+                        <button class="btn btn-outline-primary btn-sm pull-xs-right">
+                          <i class="ion-heart"></i> 32
+                        </button>
+                      </div>
+                      <a href="post.html" class="preview-link">
+                        <h1>The song you won't ever stop singing. No matter how hard you try.</h1>
+                        <p>In my demo, the holy grail layout is nested inside a document, so there's no body or main tags like shown above. Regardless, we're interested in the class names and the appearance of sections in the markup as opposed to the actual elements themselves. In particular, take note of the modifier classes used on the two sidebars, and the trivial order in which they appear in the markup. Let's break this down to paint a clear picture of what's happening...</p>
+                        <span>Read more...</span>
+                      </a>
+                    </div>
+
               </div>
       
-              <div class="post-preview">
-                <div class="post-meta">
-                  <a href="profile.html"><img src="http://i.imgur.com/N4VcUeJ.jpg" /></a>
-                  <div class="info">
-                    <a href="profile.html" class="author">Albert Pai</a>
-                    <span class="date">January 20th</span>
-                  </div>
-                  <button class="btn btn-outline-primary btn-sm pull-xs-right">
-                    <i class="ion-heart"></i> 32
-                  </button>
-                </div>
-                <a href="post.html" class="preview-link">
-                  <h1>The song you won't ever stop singing. No matter how hard you try.</h1>
-                  <p>In my demo, the holy grail layout is nested inside a document, so there's no body or main tags like shown above. Regardless, we're interested in the class names and the appearance of sections in the markup as opposed to the actual elements themselves. In particular, take note of the modifier classes used on the two sidebars, and the trivial order in which they appear in the markup. Let's break this down to paint a clear picture of what's happening...</p>
-                  <span>Read more...</span>
-                </a>
-              </div>
+              
       
             </div>
       

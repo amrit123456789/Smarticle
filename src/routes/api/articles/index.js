@@ -36,6 +36,8 @@ route.param('comment', (req,res,next,id)=>{
 })
 
 route.get('/feed', auth.required, function(req,res,next){
+
+  console.log(req.user)
   var limit = 20;
  // var query = {};
   var offset = 0;
@@ -297,6 +299,8 @@ route.put('/:article',auth.required, (req,res,next)=>{
         var articles= results[0],
             artcount= results[1],
             user=results[2]
+
+            console.log(articles)
             
               return res.json({
                 articles: articles.map(function(article){
