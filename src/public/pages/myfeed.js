@@ -34,7 +34,7 @@ function display(articles){
         <div class="post-meta">
           <a href="profile.html"><img src="http://i.imgur.com/Qr71crq.jpg" /></a>
           <div class="info">
-          <a href="profile.html" class="author">${v.articles[i].author.username}</a>
+          <a  class="author">${v.articles[i].author.username}</a>
             <span class="date">${v.articles[i].createdAt}</span>
           </div>
           <button class="btn btn-outline-primary btn-sm pull-xs-right">

@@ -11,7 +11,7 @@ window.onload= function(){
     let submit= document.getElementById('submit')
 
    submit.onclick=function(){
-    console.log("username   ", username.value)
+   // console.log("username   ", username.value)
     // console.log(body.value)
     // console.log(tagList.value)
   //  }
@@ -34,7 +34,7 @@ window.onload= function(){
     alert("updated the data")
     },  
     error: function (xhr, textStatus, errorThrown) {  
-        console.log("username   ", username.value)
+      //  console.log("username   ", username.value)
     console.log('Error in Operation');  
     alert("did not update the data")
     }  

@@ -2,7 +2,7 @@ function fetchlocal(done){
     // console.log("req.user "+JSON.stringify(req.params))
        $.ajax({
          url:'/api/articles/how-to-train-your-dragon-il3jjq' ,type: "GET",
-       beforeSend: function(xhr){xhr.setRequestHeader("Authorization" , "Token " +'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOTFmYzJiNDU5NWE1MTk0YTE0NWNkYyIsInVzZXJuYW1lIjoiYSIsImV4cCI6MTU1ODI4ODI0NCwiaWF0IjoxNTUzMTA0MjQ0fQ.CEI4T--eGv9UTVYgjd_N8qVPZ_czJr89JBzmZM89LgU');},
+       beforeSend: function(xhr){xhr.setRequestHeader("Authorization" , "Token " +localStorage.getItem('token'));},
        success:(data)=>{
          console.log("sarthak ..........")
          done(data)
