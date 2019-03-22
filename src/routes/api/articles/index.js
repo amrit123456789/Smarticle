@@ -75,11 +75,19 @@ route.get('/feed', auth.required, function(req,res,next){
 });
 
 route.post('/', auth.required , (req,res,next)=>{
+  console.log("in backend post.......")
   User.findById(req.payload.id).then((user)=>{
     if(!user)return res.sendStatus(401)
+    // console.log("req.body is  ", req.body)
+    // console.log("req.body.title ", req.body.title)
 
-    var article = new Article(req.body.article)
+    var article = new Article()
+    article.title=req.body.title
+    article.body=req.body.body
+    article.tagList=req.body.tagList
+    
     article.author= user
+    console.log(article)
     console.log("before saving in db")
     return article.save().then(()=>{
       console.log("after saving in db")
