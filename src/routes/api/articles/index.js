@@ -76,6 +76,7 @@ route.get('/feed', auth.required, function(req,res,next){
 
 route.post('/', auth.required , (req,res,next)=>{
   console.log("in backend post.......")
+  //res.redirect('../../../pages/auth.html')
   User.findById(req.payload.id).then((user)=>{
     if(!user)return res.sendStatus(401)
     // console.log("req.body is  ", req.body)
@@ -92,9 +93,11 @@ route.post('/', auth.required , (req,res,next)=>{
     return article.save().then(()=>{
       console.log("after saving in db")
       return res.json({article:article.toJSONFor(user)})
-    })
-  })
-  .catch(next)
+     
+     })
+   })
+   //see how to do this res.redirect('../../../pages/index.html?token='+user.token)
+  // .catch(next)
 })
 
 
