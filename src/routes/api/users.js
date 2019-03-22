@@ -24,11 +24,11 @@ route.post('/login',function(req,res,next){
 
       if(user){
           user.token = user.generateJWT();
-          console.log(user.token)
-          return res.json({user: user.toAuthJSON()});
+         // console.log(user.token)
+          //return res.json({user: user.toAuthJSON()});
           //successRedirect: '/',
           //failureRedirect: '/api/auth/login'
-          res.redirect('../../pages/index.html')
+          res.redirect('../../pages/index.html?token='+user.token)
       } else {
           return res.status(422).json(info);
       }
@@ -40,15 +40,15 @@ route.post('/login',function(req,res,next){
 route.post('/', function(req,res,next){
   var user = new User();
   
-   console.log("req.body: ",req.body)
+ //  console.log("req.body: ",req.body)
 //   console.log("req.body.user: ",req.body.user)
  // console.log(JSON.parse((req.body)))
  
-  user.email = req.body.email;
-  user.username = req.body.username;
-  user.setPassword(req.body.password);
-  console.log("after changing")
-  console.log(user)
+  user.email = req.body.user.email;
+  user.username = req.body.user.username;
+  user.setPassword(req.body.user.password);
+  // console.log("after changing")
+  // console.log(user)
   try{
   user.save().then(function(){
     console.log("after changing")

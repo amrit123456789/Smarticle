@@ -1,4 +1,44 @@
+// function GetURLParameter(sParam)
+// {
+
+// 	    var sPageURL = window.location.search.substring(1);
+
+// 	    var sURLVariables = sPageURL.split('&');
+
+// 	    for (var i = 0; i < sURLVariables.length; i++)
+//      {
+
+// 	        var sParameterName = sURLVariables[i].split('=');
+
+// 	        if (sParameterName[0] == sParam){
+
+// 	            console.log("token is ", sParameterName[1]);
+
+// 	        }
+
+// 	    }
+
+//   }​
+  
+
+
 function fetchglobal(done){
+
+  var sPageURL = window.location.search.substring(1);
+
+  var sURLVariables = sPageURL.split('&');
+
+  for (var i = 0; i < sURLVariables.length; i++)
+ {
+
+      var sParameterName = sURLVariables[i].split('=');
+
+      localStorage.setItem('token', sParameterName[1])
+
+      //    console.log("token is ", localStorage.getItem('token'));
+
+
+  }
 
     $.get('/api/articles' ,(data)=>{
         done(data)
@@ -8,6 +48,8 @@ function fetchglobal(done){
 fetchglobal((articles) => {
     display(articles);   
 })
+
+//GetURLParameter(token)
 
 function display(articles){
     let posts=$('.mypost')
@@ -44,7 +86,7 @@ function display(articles){
              
         `)
 
-        console.log(posts)
+       // console.log(posts)
     }
    // console.log(articles)
 }
