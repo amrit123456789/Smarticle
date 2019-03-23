@@ -11,14 +11,15 @@ function fetcharticle(obj){
    
   
   console.log("post slug is ",obj.id)
-  // if (!e) var e = window.event;
-  //   e.cancelBubble = true;
-  //   if (e.stopPropagation) e.stopPropagation();
+  if (!e) var e = window.event;
+    e.cancelBubble = true;
+    if (e.stopPropagation) e.stopPropagation();
 
 }
 
 function getcomments(article){
   let a=article.article
+  window.artic=article
   //console.log("myarticle  is....",a)
   $.ajax({
     url:'/api/articles/'+a.slug+'/comments' ,type: "GET",
@@ -163,18 +164,55 @@ function getcomments(article){
        
                <form class="card comment-form">
                  <div class="card-block">
-                   <textarea class="form-control" placeholder="Write a comment..." rows="3"></textarea>
+                   <textarea class="form-control" placeholder="Write a comment..." rows="3" id="mcom"></textarea>
                  </div>
                  <div class="card-footer">
                    <img src="http://i.imgur.com/Qr71crq.jpg" class="comment-author-img" />
-                   <p  id="postit" onclick="console.log("hi")">
-                    Post Comment...
+                   <p  id="postit" onclick="compost(this)">
+                    <b>Post Comment...</b>
                    </p>
                  </div>
                </form>`)
 
 
    
+   }
+   function compost(e){
+   //  console.log("e is....",e)
+     let com=document.getElementById('mcom')
+     //console.group("comment value is.  ",com.value)
+
+     $.ajax({
+      url:'/api/articles/'+window.sl+'/comments' ,type: "POST",
+    beforeSend: function(xhr){xhr.setRequestHeader("Authorization" , "Token " +localStorage.getItem('token'));},
+    dataType: "json",
+    data:{
+        "comment": com.value
+    },
+    success:(data)=>{
+      console.log("compost ..........")
+      $.ajax({
+        url:'/api/articles/'+window.sl ,type: "GET",
+      beforeSend: function(xhr){xhr.setRequestHeader("Authorization" , "Token " +localStorage.getItem('token'));},
+      success:(data)=>{
+       // console.log("sarthak ..........",data)
+        getcomments(data)
+    }})
+    .fail(function(jqXHR, textStatus, errorThrown){console.log("AmritEror"+errorThrown)});
+      // display3(window.artic)
+    },
+    error:function(jqXHR, textStatus, errorThrown){
+      console.log("AmritEror"+errorThrown)
+    }
+  
+    })
+
+
+
+
+    if (!e) var e = window.event;
+    e.cancelBubble = true;
+    if (e.stopPropagation) e.stopPropagation();
    }
 
    

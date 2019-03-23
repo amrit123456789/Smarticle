@@ -172,7 +172,8 @@ route.put('/:article',auth.required, (req,res,next)=>{
     User.findById(req.payload.id).then((user)=>{
         if(!user){res.sendStatus(401)}
 
-        var comment =new Comment(req.body.comment)
+        var comment =new Comment()
+        comment.body=req.body.comment
         comment.author = user
         comment.article = req.article
         comment.save()
