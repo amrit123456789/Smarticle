@@ -8,21 +8,8 @@ var auth =require('../../../middlewares/auth')
 
 //route.use('/comments' , require('./comments'))
 
-route.param('article', (req,res,next,slug)=>{
-  console.log("iam in article param")
-  Article.findOne({slug:slug})
-  .populate('author')
-  .then((article)=>{
-        if(!article){
-          return res.sendStatus(404)
-        }
-       // console.log("req.article is .............",req.article)
-        req.article=article
-      //  console.log("article is .........",article)
-        return next()
-  })
-  .catch(next)
-})
+
+
 
 route.param('comment', (req,res,next,id)=>{
   console.log("in param req")
@@ -105,7 +92,7 @@ route.post('/', auth.required , (req,res,next)=>{
 
 // Get one article.. understand it once again
 route.get('/:article', auth.optional, function(req,res,next){
-  console.log("req.payload before......",req.payload)
+  //console.log("req.payload before......",req.payload)
   Promise.all([
    // console.log("req.payload before......",req.payload)
       req.payload ? User.findById(req.payload.id) : null,
@@ -113,7 +100,7 @@ route.get('/:article', auth.optional, function(req,res,next){
       //console.log("req.payload after......",req.payload)
   ]).then(function(results){
    // console.log("results............" , results)
-    console.log("req.payload after......",req.payload)
+    //console.log("req.payload after......",req.payload)
       var user = results[0];
      // console.log("user is.....", user)
       return res.json({article: req.article.toJSONFor(user)});
@@ -162,7 +149,21 @@ route.put('/:article',auth.required, (req,res,next)=>{
     })
     .catch(next)
   })
-
+  route.param('article', (req,res,next,slug)=>{
+    console.log("iam in article param")
+    Article.findOne({slug:slug})
+    .populate('author')
+    .then((article)=>{
+          if(!article){
+            return res.sendStatus(404)
+          }
+         // console.log("req.article is .............",req.article)
+          req.article=article
+        //  console.log("article is .........",article)
+          return next()
+    })
+    .catch(next)
+  })
   
   
   route.post('/:article/comments', auth.required , (req,res,next)=>{
@@ -173,7 +174,7 @@ route.put('/:article',auth.required, (req,res,next)=>{
 
         var comment =new Comment(req.body.comment)
         comment.author = user
-        comment.aritlce = req.article
+        comment.article = req.article
         comment.save()
 
         req.article.comments.push(comment)
@@ -187,6 +188,7 @@ route.put('/:article',auth.required, (req,res,next)=>{
     })
 
     route.get('/:article/comments', auth.optional , (req,res,next)=>{
+      console.log("in get request")
       Promise.resolve(req.payload ? User.findById(req.payload.id) : null)
       .then((user)=>{
         //if(!user){res.sendStatus(401)}
@@ -202,10 +204,13 @@ route.put('/:article',auth.required, (req,res,next)=>{
             }
           }
         }).execPopulate().then(()=>{
+          console.log("comments are ... ",req.article.comments)
           return res.json({comments: 
           req.article.comments.map((comment)=>{
             return comment.toJSONFor()
-          })})
+
+          })
+        })
         })
 
     })

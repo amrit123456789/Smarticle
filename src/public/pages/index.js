@@ -23,7 +23,7 @@ function fetchglobal(done){
 }
 
 fetchglobal((articles) => {
-  console.log("displaying articles,..........")
+  //console.log("displaying articles,..........")
     display(articles);   
 })
 
@@ -53,11 +53,12 @@ function display(articles){
             <i class="ion-heart"></i> ${v.articles[i].favoritesCount}
           </button>
         </div>
-        <a href="post.html" class="preview-link">
+        
           <h1>${v.articles[i].title}</h1>
           <p>${v.articles[i].body}</p>
-          <span>Read more...</span>
-        </a>
+<button  class="author" id=${v.articles[i].slug} onclick="fetcharticle(this)">Read More...</button>
+         
+       
       </div>
 
 
@@ -69,36 +70,7 @@ function display(articles){
    // console.log(articles)
 }
 
-// function fetchlocal(username){
-//    console.log("here in onclick..............>>")
-//      $.ajax({
-//        url:'/api/profiles/amrit' ,type: "GET",
-//      beforeSend: function(xhr){xhr.setRequestHeader("Authorization" , "Token " +localStorage.getItem('token'));},
-//      success:(data)=>{
-//        console.log("sarthak ..........",data)
-//        display2(data)
-//    }})
-//    .fail(function(jqXHR, textStatus, errorThrown){console.log("AmritEror"+errorThrown)});
- 
-//  }
-     
 
-// function display2(profile){
-// console.log("in display")
-//   let body=$('body,html')
-  
-//   body.empty()
-//    let v= JSON.parse(JSON.stringify(profile))
-
-//       body.append(`
-//      yooooooooooooooo
-
-
-           
-//       `)
-
-//       //console.log(posts)
-//   }
  
 
  

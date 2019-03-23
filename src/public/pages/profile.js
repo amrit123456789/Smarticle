@@ -1,7 +1,8 @@
 function fetchlocal(username){
   console.log("here in onclick..............>>")
+  console.log(username)
     $.ajax({
-      url:'/api/profiles/amrit' ,type: "GET",
+      url:'/api/profiles/'+username.id ,type: "GET",
     beforeSend: function(xhr){xhr.setRequestHeader("Authorization" , "Token " +localStorage.getItem('token'));},
     success:(data)=>{
       console.log("sarthak ..........",data)
